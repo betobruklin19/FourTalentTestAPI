@@ -5,6 +5,7 @@ import com.api.api_springboot.entities.Endereco;
 import com.api.api_springboot.enums.Estado;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ClienteRepository {
@@ -40,24 +42,47 @@ public class ClienteRepository {
         });
     }
 
-    public Cliente buscarClientePorId(Long id) {
+    public Optional<Cliente> buscarClientePorId(Long id) {
         String sql = "SELECT c.*, e.rua, e.cidade, e.estado FROM clientes c " +
                 "JOIN enderecos e ON c.endereco_id = e.id WHERE c.id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
-            Cliente cliente = new Cliente();
-            cliente.setId(rs.getLong("id"));
-            cliente.setNome(rs.getString("nome"));
-            cliente.setEmail(rs.getString("email"));
+        try {
+            Cliente cliente = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
+                Cliente c = new Cliente();
+                c.setId(rs.getLong("id"));
+                c.setNome(rs.getString("nome"));
+                c.setEmail(rs.getString("email"));
 
-            Endereco endereco = new Endereco();
-            endereco.setId(rs.getLong("endereco_id"));
-            endereco.setRua(rs.getString("rua"));
-            endereco.setCidade(rs.getString("cidade"));
-            endereco.setEstado(Estado.valueOf(rs.getString("estado")));
-            cliente.setEndereco(endereco);
+                Endereco endereco = new Endereco();
+                endereco.setId(rs.getLong("endereco_id"));
+                endereco.setRua(rs.getString("rua"));
+                endereco.setCidade(rs.getString("cidade"));
+                endereco.setEstado(Estado.valueOf(rs.getString("estado")));
+                c.setEndereco(endereco);
 
-            return cliente;
-        });
+                return c;
+            });
+            return Optional.of(cliente);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Cliente> buscarClientePorEmail(String email) {
+        String sql = "SELECT c.* FROM clientes c " +
+                "WHERE c.email = ?";
+        try {
+            Cliente cliente = jdbcTemplate.queryForObject(sql, new Object[]{email}, (rs, rowNum) -> {
+                Cliente c = new Cliente();
+                c.setId(rs.getLong("id"));
+                c.setNome(rs.getString("nome"));
+                c.setEmail(rs.getString("email"));
+
+                return c;
+            });
+            return Optional.of(cliente);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public List<Cliente> pesquisarClientePorEstado(String estado) {

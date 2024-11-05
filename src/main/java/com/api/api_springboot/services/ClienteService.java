@@ -1,11 +1,13 @@
 package com.api.api_springboot.services;
 
 import com.api.api_springboot.entities.Cliente;
+import com.api.api_springboot.exceptions.ClienteException;
 import com.api.api_springboot.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -14,6 +16,10 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public Cliente cadastrarCliente(Cliente cliente){
+        Optional<Cliente> clienteExistente = clienteRepository.buscarClientePorEmail(cliente.getEmail());
+        if (clienteExistente.isPresent()){
+            throw new ClienteException("Cliente já cadastrado!");
+        }
         clienteRepository.salvarCliente(cliente);
         return cliente;
     }
@@ -28,7 +34,7 @@ public class ClienteService {
         clienteRepository.deletarCliente(id);
     }
 
-    public Cliente buscarClientePorId(Long id) {
+    public Optional<Cliente> buscarClientePorId(Long id) {
         return clienteRepository.buscarClientePorId(id);
     }
 
