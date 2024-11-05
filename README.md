@@ -1,6 +1,11 @@
 # API CRUD de Clientes com Endereço
 
-![spring_logo](https://github.com/user-attachments/assets/d72cb797-7a1c-4032-8af8-7d394a43919d)
+![spring_security_logo_spring_swagger](https://github.com/user-attachments/assets/683fcb7f-4b1b-42ce-95ff-d23839a9127b)
+
+
+
+
+
 
 
 ## Descrição
