@@ -1,6 +1,6 @@
 # API CRUD de Clientes com Endereço
 
-![springboot_logo](https://github.com/user-attachments/assets/835295f8-a6f4-4524-b65f-50978a509311)
+![spring_logo](https://github.com/user-attachments/assets/d72cb797-7a1c-4032-8af8-7d394a43919d)
 
 
 ## Descrição
