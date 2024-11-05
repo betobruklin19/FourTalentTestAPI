@@ -30,6 +30,7 @@ Esta é uma API RESTful desenvolvida com **Spring Boot 3.3.5** e **Java 17** que
 - Cadastro de endereços relacionados aos clientes
 - Documentação interativa da API com Swagger
 - Identificação e registro na base de dados de quem realizou a açao de cadastro ou alteração de um cliente assim como sua respectiva data.
+- Teste unitário e de integração
 
 ### Pré-requisitos
 
