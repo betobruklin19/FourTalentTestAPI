@@ -1,6 +1,6 @@
 # API CRUD de Clientes com Endereço
 
-![Spring Boot](https://spring.io/img/homepage/boot-reboot.png)
+https://spring.io/img/homepage/boot-reboot.png
 
 ## Descrição
 
