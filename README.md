@@ -68,11 +68,8 @@ Content-Type: application/json
 {
   "nome": "João da Silva",
   "email": "joao@example.com",
-  "cpf": "12345678909",
-  "idade": 30,
   "endereco": {
     "rua": "Rua das Flores",
-    "numero": "123",
     "cidade": "São Paulo",
     "estado": "SP"
   }
