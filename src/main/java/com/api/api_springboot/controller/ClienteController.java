@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/clientes", produces = {"application/json"})
@@ -26,8 +27,8 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<?> cadastrarCliente(@RequestBody Cliente cliente) {
         try {
-            clienteService.cadastrarCliente(cliente);
-            return new ResponseEntity<>(cliente, HttpStatus.CREATED);
+            Cliente clienteSalvo = clienteService.cadastrarCliente(cliente);
+            return new ResponseEntity<>(clienteSalvo, HttpStatus.CREATED);
         } catch (ClienteException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
@@ -37,8 +38,12 @@ public class ClienteController {
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
         cliente.setId(id);
-        clienteService.atualizarCliente(id, cliente);
-        return ResponseEntity.ok(cliente);
+        try {
+            clienteService.atualizarCliente(id, cliente);
+            return ResponseEntity.ok(cliente);
+        } catch (ClienteException e) {
+            throw e;
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -54,8 +59,7 @@ public class ClienteController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long id) {
-        Cliente cliente = clienteService.buscarClientePorId(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+        Cliente cliente = clienteService.buscarClientePorId(id);
         return ResponseEntity.ok(cliente);
     }
 
@@ -70,4 +74,10 @@ public class ClienteController {
         List<Cliente> clientes = clienteService.pesquisarClientesPorEstado(estado);
         return ResponseEntity.ok(clientes);
     }
+
+    @ExceptionHandler(ClienteException.class)
+    public ResponseEntity<String> handleClienteNotFound(ClienteException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
 }

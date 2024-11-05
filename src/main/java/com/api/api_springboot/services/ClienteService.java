@@ -6,6 +6,7 @@ import com.api.api_springboot.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,34 +16,46 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public Cliente cadastrarCliente(Cliente cliente){
+    public Cliente cadastrarCliente(Cliente cliente) {
         Optional<Cliente> clienteExistente = clienteRepository.buscarClientePorEmail(cliente.getEmail());
-        if (clienteExistente.isPresent()){
+        if (clienteExistente.isPresent()) {
             throw new ClienteException("Cliente já cadastrado!");
         }
-        clienteRepository.salvarCliente(cliente);
-        return cliente;
+        return clienteRepository.salvarCliente(cliente);
     }
 
     public Cliente atualizarCliente(Long id, Cliente cliente) {
+        Cliente clienteExistente = clienteRepository.buscarClientePorId(id)
+                .orElseThrow(() -> new ClienteException("Cliente não encontrado para atualização"));
         cliente.setId(id);
         clienteRepository.atualizarCliente(cliente);
         return cliente;
     }
 
     public void deletarCliente(Long id) {
-        clienteRepository.deletarCliente(id);
+        Cliente cliente = clienteRepository.buscarClientePorId(id)
+                .orElseThrow(() -> new ClienteException("Cliente não encontrado para exclusão"));
+        clienteRepository.deletarCliente(cliente.getId());
     }
 
-    public Optional<Cliente> buscarClientePorId(Long id) {
-        return clienteRepository.buscarClientePorId(id);
+    public Cliente buscarClientePorId(Long id) {
+        return clienteRepository.buscarClientePorId(id)
+                .orElseThrow(() -> new ClienteException("Cliente não encontrado com o ID: " + id));
     }
 
     public List<Cliente> listarTodosClientes() {
-        return clienteRepository.listarTodosClientes();
+        List<Cliente> clientes = clienteRepository.listarTodosClientes();
+        if (clientes.isEmpty()) {
+            throw new ClienteException("Nenhum cliente encontrado.");
+        }
+        return clientes;
     }
 
     public List<Cliente> pesquisarClientesPorEstado(String estado) {
-        return clienteRepository.pesquisarClientePorEstado(estado);
+        List<Cliente> clientes = clienteRepository.pesquisarClientePorEstado(estado);
+        if (clientes.isEmpty()) {
+            throw new ClienteException("Nenhum cliente encontrado para o estado: " + estado);
+        }
+        return clientes;
     }
 }
