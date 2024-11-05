@@ -1,6 +1,7 @@
 # API CRUD de Clientes com Endereço
 
-[https://spring.io/img/homepage/boot-reboot.png](https://user-images.githubusercontent.com/84719774/129191080-723b3b46-4e0b-4aa5-8eb9-654c2c025b18.png)
+![springboot_logo](https://github.com/user-attachments/assets/835295f8-a6f4-4524-b65f-50978a509311)
+
 
 ## Descrição
 
