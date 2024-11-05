@@ -82,6 +82,11 @@ Content-Type: application/json
 GET /clientes
 ```
 
+## Swagger
+
+![swagger_rotas](https://github.com/user-attachments/assets/2e2ad3f4-53b5-4cf3-91c7-8ec1dfa0651c)
+
+
 ## Contribuições
 
 Contribuições são bem-vindas! 
