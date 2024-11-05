@@ -81,12 +81,6 @@ GET /clientes
 
 ## Contribuições
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir um pull request ou um issue.
+Contribuições são bem-vindas! 
 
-## Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-Sinta-se à vontade para personalizar as seções de acordo com suas necessidades, adicionar mais exemplos ou detalhes conforme necessário. Se precisar de imagens específicas ou alterações, me avise!
