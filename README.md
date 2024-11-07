@@ -19,7 +19,7 @@ Esta é uma API RESTful desenvolvida com **Spring Boot 3.3.5** e **Java 17** que
 - **Spring Security**
 - **Swagger**
 - **H2 Database**
-- **SQL Nativo com jdbcTemplate**
+- **Query/SQL Nativo**
 
 ## Funcionalidades
 
