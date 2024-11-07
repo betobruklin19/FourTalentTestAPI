@@ -83,6 +83,9 @@ Content-Type: application/json
 ```http
 GET /clientes
 ```
+### Postman
+
+[collection](https://www.postman.com/betobruklin/geral/collection/e8goucu/api-springboot?action=share&creator=16153036&active-environment=16153036-fde54d44-a11f-4062-91eb-7288b2854b25)
 
 ## Swagger
 
