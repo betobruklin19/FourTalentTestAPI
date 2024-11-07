@@ -29,6 +29,7 @@ Esta é uma API RESTful desenvolvida com **Spring Boot 3.3.5** e **Java 17** que
 - Exclusão de clientes
 - Cadastro de endereços relacionados aos clientes
 - Documentação interativa da API com Swagger
+- Criação e login de usuário autenticado
 - Identificação e registro na base de dados de quem realizou a açao de cadastro ou alteração de um cliente assim como sua respectiva data.
 - Teste unitário e de integração
 
