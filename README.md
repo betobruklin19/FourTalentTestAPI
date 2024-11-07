@@ -56,7 +56,7 @@ Esta é uma API RESTful desenvolvida com **Spring Boot 3.3.5** e **Java 17** que
 
 ### Acessando a API
 
-A API estará disponível em `http://localhost:8080`. Você pode acessar a documentação da API através do Swagger em `http://localhost:8080/swagger-ui.html`.
+A API estará disponível em `http://localhost:8080`. Você pode acessar a documentação da API através do Swagger em `http://localhost:8080/swagger-ui.html#/`.
 
 ## Exemplos de Uso
 
