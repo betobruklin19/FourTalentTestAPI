@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Cadastro de Clientes", description = "Endpoints para cadastro de novos clientes")
 @RestController
 @RequestMapping(value = "/clientes", produces = {"application/json"})
-@Tag(name="clientes")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    @Operation(summary = "Cria novo cliente", description = "Cria um novo cliente")
+    @Operation(summary = "Cadastra um novo cliente", description = "Cadastra um novo cliente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Criado com Sucesso"),
-            @ApiResponse(responseCode = "400", description = "Campo obrigatório faltando"),
-            @ApiResponse(responseCode = "409", description = "Cliente já existente")
+            @ApiResponse(responseCode = "201", description = "Cliente Cadastrado com ducesso."),
+            @ApiResponse(responseCode = "400", description = "Campo obrigatório faltando. Verifique se todos os campos obrigatórios estão preenchidos."),
+            @ApiResponse(responseCode = "409", description = "Cliente já existente. Não é possível cadastrar o mesmo cliente várias vezes.")
     })
     @PostMapping
     public ResponseEntity<?> cadastrarCliente(@RequestBody Cliente cliente) {
@@ -40,10 +40,10 @@ public class ClienteController {
 
     @Operation(summary = "Atualiza um cliente", description = "Atualiza um cliente existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Atualizado com Sucesso"),
-            @ApiResponse(responseCode = "204", description = "Sem conteúdo a retornar"),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida"),
-            @ApiResponse(responseCode = "404", description = "Cliente informado não encontrado")
+            @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso."),
+            @ApiResponse(responseCode = "204", description = "Sem conteúdo a retornar."),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida."),
+            @ApiResponse(responseCode = "404", description = "Cliente informado não encontrado.")
     })
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
@@ -58,9 +58,9 @@ public class ClienteController {
 
     @Operation(summary = "Deleta um cliente", description = "Deleta um cliente existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Deletado com Sucesso"),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida"),
-            @ApiResponse(responseCode = "404", description = "Cliente informado não encontrado")
+            @ApiResponse(responseCode = "204", description = "Cliente deletado com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida."),
+            @ApiResponse(responseCode = "404", description = "Cliente informado não encontrado.")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarCliente(@PathVariable Long id) {
@@ -70,8 +70,8 @@ public class ClienteController {
 
     @Operation(summary = "Busca cliente pelo ID", description = "Busca um cliente existente por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente retornado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Cliente informado não encontrado")
+            @ApiResponse(responseCode = "200", description = "Cliente retornado com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Cliente informado não encontrado.")
     })
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long id) {
@@ -81,8 +81,8 @@ public class ClienteController {
 
     @Operation(summary = "Lista todos os clientes", description = "Busca todos os clientes existentes")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente(s) retornado(s) com sucesso"),
-            @ApiResponse(responseCode = "204", description = "Cliente informado não encontrado")
+            @ApiResponse(responseCode = "200", description = "Cliente(s) retornado(s) com sucesso."),
+            @ApiResponse(responseCode = "204", description = "Cliente informado não encontrado.")
     })
     @GetMapping
     public ResponseEntity<List<Cliente>> listarTodosClientes() {
@@ -90,10 +90,10 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
-    @Operation(summary = "Lista clientes por estado (UF)", description = "Busca um ou mais clientes por estado (UF)")
+    @Operation(summary = "Lista clientes por estado (UF)", description = "Busca um ou mais clientes filtrado por estado (UF).")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente(s) retornado(s) com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Nenhum cliente encontrado para o estado informado")
+            @ApiResponse(responseCode = "200", description = "Cliente(s) retornado(s) com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Nenhum cliente encontrado para o estado informado.")
     })
     @GetMapping("/estado/{estado}")
     public ResponseEntity<List<Cliente>> pesquisarClientesPorEstado(@PathVariable String estado) {

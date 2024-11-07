@@ -2,6 +2,10 @@ CREATE TABLE IF NOT EXISTS clientes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    criado_por VARCHAR(255) NOT NULL,
+    modificado_por VARCHAR(255),
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    data_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     endereco_id BIGINT
 );
 
@@ -11,3 +15,11 @@ CREATE TABLE IF NOT EXISTS enderecos (
     cidade VARCHAR(255) NOT NULL,
     estado VARCHAR(50) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS usuarios (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    login VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+INSERT INTO usuarios (login, password) VALUES ('betobruklin', '$2y$12$sfdXmP72dZ30322VC8vzze4fOgWF35.Rh2rAjN2Nw0B4S/FHzh6ge');

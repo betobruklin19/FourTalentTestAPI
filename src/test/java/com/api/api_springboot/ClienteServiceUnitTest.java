@@ -1,21 +1,27 @@
 package com.api.api_springboot;
 
-import com.api.api_springboot.entities.Cliente;
-import com.api.api_springboot.entities.Endereco;
-import com.api.api_springboot.enums.Estado;
-import com.api.api_springboot.exceptions.ClienteException;
-import com.api.api_springboot.repositories.ClienteRepository;
-import com.api.api_springboot.services.ClienteService;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.api.api_springboot.entities.Cliente;
+import com.api.api_springboot.entities.Endereco;
+import com.api.api_springboot.exceptions.ClienteException;
+import com.api.api_springboot.repositories.ClienteRepository;
+import com.api.api_springboot.services.ClienteService;
 
 public class ClienteServiceUnitTest {
 

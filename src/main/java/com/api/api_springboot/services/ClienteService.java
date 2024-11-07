@@ -4,8 +4,12 @@ import com.api.api_springboot.entities.Cliente;
 import com.api.api_springboot.exceptions.ClienteException;
 import com.api.api_springboot.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +24,10 @@ public class ClienteService {
         if (clienteExistente.isPresent()) {
             throw new ClienteException("Cliente já cadastrado!");
         }
+        String usuarioLogado = getUsuarioLogado();
+        cliente.setCriadoPor(usuarioLogado);
+        cliente.setDataCadastro(LocalDateTime.now());
+
         return clienteRepository.salvarCliente(cliente);
     }
 
@@ -27,8 +35,21 @@ public class ClienteService {
         Cliente clienteExistente = clienteRepository.buscarClientePorId(id)
                 .orElseThrow(() -> new ClienteException("Cliente não encontrado para atualização"));
         cliente.setId(id);
+        String usuarioLogado = getUsuarioLogado();
+        cliente.setModificadoPor(usuarioLogado);
+        cliente.setDataAlteracao(LocalDateTime.now());
+
         clienteRepository.atualizarCliente(cliente);
         return cliente;
+    }
+
+    private String getUsuarioLogado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
     }
 
     public void deletarCliente(Long id) {
@@ -57,4 +78,5 @@ public class ClienteService {
         }
         return clientes;
     }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,30 +109,32 @@ public class ClienteRepository {
     @Transactional
     public Cliente salvarCliente(Cliente cliente) {
         String sqlEndereco = "INSERT INTO enderecos (rua, cidade, estado) VALUES (?, ?, ?)";
-        KeyHolder keyHolderEndereco  = new GeneratedKeyHolder();
+        KeyHolder keyHolderEndereco = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sqlEndereco, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, cliente.getEndereco().getRua());
             ps.setString(2, cliente.getEndereco().getCidade());
             ps.setString(3, cliente.getEndereco().getEstado().toString());
             return ps;
-        }, keyHolderEndereco );
+        }, keyHolderEndereco);
 
         Long enderecoId = keyHolderEndereco.getKey().longValue();
         cliente.getEndereco().setId(enderecoId);
 
-        String sqlCliente = "INSERT INTO clientes (nome, email, endereco_id) VALUES (?, ?, ?)";
+        String sqlCliente = "INSERT INTO clientes (nome, email, endereco_id, criado_por, data_cadastro) VALUES (?, ?, ?, ?, ?)";
         KeyHolder keyHolderCliente = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sqlCliente, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, cliente.getNome());
             ps.setString(2, cliente.getEmail());
             ps.setLong(3, enderecoId);
+            ps.setString(4, cliente.getCriadoPor());
+            ps.setTimestamp(5, Timestamp.valueOf(cliente.getDataCadastro()));
             return ps;
         }, keyHolderCliente);
 
-        Long clienteId = keyHolderCliente.getKey().longValue();
-        cliente.setId(clienteId); // Define o ID gerado no objeto cliente
+        Long clienteId = (Long) keyHolderCliente.getKeys().get("id");
+        cliente.setId(clienteId);
         return cliente;
     }
 
@@ -139,8 +142,8 @@ public class ClienteRepository {
     public void atualizarCliente(Cliente cliente) {
         String sqlEndereco = "UPDATE enderecos SET rua = ?, cidade = ?, estado = ? WHERE id = ?";
         jdbcTemplate.update(sqlEndereco, cliente.getEndereco().getRua(), cliente.getEndereco().getCidade(), cliente.getEndereco().getEstado(), cliente.getEndereco().getId());
-        String sqlCliente = "UPDATE clientes SET nome = ?, email = ? WHERE id = ?";
-        jdbcTemplate.update(sqlCliente, cliente.getNome(), cliente.getEmail(), cliente.getId());
+        String sqlCliente = "UPDATE clientes SET nome = ?, email = ?, modificado_por = ?, data_alteracao = ? WHERE id = ?";
+        jdbcTemplate.update(sqlCliente, cliente.getNome(), cliente.getEmail(), cliente.getModificadoPor(), Timestamp.valueOf(cliente.getDataAlteracao()), cliente.getId());
     }
 
     @Transactional

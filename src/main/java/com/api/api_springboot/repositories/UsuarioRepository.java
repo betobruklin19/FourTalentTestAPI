@@ -1,13 +1,15 @@
 package com.api.api_springboot.repositories;
 
-import com.api.api_springboot.entities.Usuario;
+import java.sql.PreparedStatement;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.util.Optional;
+import com.api.api_springboot.entities.Usuario;
 
 @Repository
 public class UsuarioRepository {
@@ -16,7 +18,7 @@ public class UsuarioRepository {
     private JdbcTemplate jdbcTemplate;
 
     public Optional<Usuario> CriarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (email, senha) VALUES (?, ?)";
+        String sql = "INSERT INTO usuarios (login, password) VALUES (?, ?)";
 
         try {
             jdbcTemplate.update(connection -> {
@@ -26,25 +28,21 @@ public class UsuarioRepository {
                 return ps;
             });
             return Optional.of(usuario);
-        }catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    public Optional<Usuario> BuscarUsuarioPorEmail(String email){
-        String sql = "SELECT u.* FROM usuarios u WHERE u.email = ?";
-        try {
-            Usuario usuario = jdbcTemplate.queryForObject(sql, new Object[]{email}, (rs, rowNum) -> {
-                Usuario u = new Usuario();
-                u.setId(rs.getLong("id"));
-                u.setUsername(rs.getString("email"));
-                u.setPassword(rs.getString("senha"));
-                return u;
-            });
-            return Optional.of(usuario);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
+    public Usuario BuscarUsuarioPorLogin(String login) {
+        String sql = "SELECT u.* FROM usuarios u WHERE u.login = ?";
+        List<Usuario> usuarios = jdbcTemplate.query(sql, new Object[]{login}, (rs, rowNum) -> {
+            Usuario u = new Usuario();
+            u.setId(rs.getLong("id"));
+            u.setLogin(rs.getString("login"));
+            u.setPassword(rs.getString("password"));
+            return u;
+        });
+        return usuarios.isEmpty() ? null : usuarios.get(0);
     }
 
 }
