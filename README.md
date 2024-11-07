@@ -85,7 +85,7 @@ GET /clientes
 
 ## Swagger
 
-![swagger_rotas](https://github.com/user-attachments/assets/2e2ad3f4-53b5-4cf3-91c7-8ec1dfa0651c)
+![api_clientes_swagger](https://github.com/user-attachments/assets/1d95192d-64d0-4404-93bb-a315bddae9c3)
 
 
 ## Contribuições
